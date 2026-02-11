@@ -1,27 +1,46 @@
+// Load header
 fetch("header.html")
   .then(res => res.text())
   .then(data => {
     document.getElementById("header-placeholder").innerHTML = data;
-
-    const hamburger = document.getElementById("hamburger");
-    const nav = document.getElementById("primary-navigation");
-    const header = document.querySelector(".site-header");
-
-    hamburger.addEventListener("click", () => {
-      nav.classList.toggle("active");
-
-      const expanded = hamburger.getAttribute("aria-expanded") === "true";
-      hamburger.setAttribute("aria-expanded", !expanded);
-    });
-
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 50) {
-        header.classList.add("scrolled");
-      } else {
-        header.classList.remove("scrolled");
-      }
-    });
+    initHeader();
   });
+
+// Load footer
+fetch("footer.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("footer-placeholder").innerHTML = data;
+  });
+
+function initHeader() {
+  const hamburger = document.getElementById("hamburger");
+  const nav = document.getElementById("primary-navigation");
+  const header = document.querySelector(".site-header");
+
+  hamburger.addEventListener("click", () => {
+    nav.classList.toggle("active");
+  });
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 40) {
+      header.classList.add("scrolled");
+    } else {
+      header.classList.remove("scrolled");
+    }
+  });
+
+  // Active link
+  const links = document.querySelectorAll(".nav-list a");
+  const current = window.location.pathname.split("/").pop();
+
+  links.forEach(link => {
+    if (link.getAttribute("href") === current) {
+      link.classList.add("active");
+    }
+  });
+}
+
 
 // Google Drive integration
 const folderId = "1CvLkxQ2u9AZbajQIQIod2r9yh_TV1QX";
