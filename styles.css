@@ -150,17 +150,22 @@ p {
   position: fixed;
   inset: 0;
   background: #0f1f2f;
-  z-index: 2000;
+  z-index: 4000; /* över header */
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: translateY(-100%);
-  transition: transform 0.45s cubic-bezier(0.77, 0, 0.175, 1);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
 }
 
 .navigation.active {
+  opacity: 1;
+  visibility: visible;
   transform: translateY(0);
 }
+
 
 .nav-list {
   list-style: none;
@@ -185,6 +190,11 @@ p {
 .nav-list a.active {
   color: #fff;
 }
+
+body.menu-open {
+  overflow: hidden;
+}
+
 
 /* ======================================================
    HERO

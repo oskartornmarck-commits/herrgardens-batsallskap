@@ -18,9 +18,11 @@ function initHeader() {
   const nav = document.getElementById("primary-navigation");
   const header = document.querySelector(".site-header");
 
-  hamburger.addEventListener("click", () => {
-    nav.classList.toggle("active");
-  });
+hamburger.addEventListener("click", () => {
+  nav.classList.toggle("active");
+  document.body.classList.toggle("menu-open");
+});
+
 
   window.addEventListener("scroll", () => {
     if (window.scrollY > 40) {
