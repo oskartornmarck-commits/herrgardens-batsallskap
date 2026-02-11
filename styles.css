@@ -52,10 +52,13 @@ p {
 ===================================================== */
 
 .container {
-  width: 90%;
+  width: 100%;
   max-width: 1150px;
   margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
 }
+
 
 .narrow {
   max-width: 720px;
@@ -94,6 +97,7 @@ p {
   align-items: center;
   height: 90px;
 }
+
 
 /* Brand */
 
