@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dokument – Herrgårdens Båtsällskap</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<script>
+  const password = "hamn2024";
+  const input = prompt("Ange lösenord för att visa dokument:");
+
+  if (input !== password) {
+    document.body.innerHTML = "<h1 style='padding:100px;text-align:center;'>Fel lösenord</h1>";
+  }
+</script>
+
+<div id="header-placeholder"></div>
+
+<section class="page-hero">
+  <div class="container">
+    <h1>Dokument</h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container narrow">
+    <ul>
+      <li><a href="#">Stadgar (PDF)</a></li>
+      <li><a href="#">Årsmötesprotokoll 2025</a></li>
+      <li><a href="#">Ordningsregler</a></li>
+      <li><a href="#">Budget</a></li>
+    </ul>
+
+    <p>
+      Alternativt kan dokumenten nås via föreningens Google Drive:
+    </p>
+
+    <p>
+      <a href="#" target="_blank">Öppna dokumentmapp</a>
+    </p>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="script.js"></script>
+
+</body>
+</html>
