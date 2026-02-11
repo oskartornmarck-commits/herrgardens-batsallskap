@@ -19,7 +19,25 @@ body {
   line-height: 1.65;
   color: #111;
   background: #fff;
-  -webkit-font-smoothing: antialiased;
+}
+
+/* =====================================================
+   LAYOUT SYSTEM
+===================================================== */
+
+.container {
+  max-width: 1150px;
+  margin: 0 auto;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.section {
+  padding: 120px 0;
+}
+
+.narrow {
+  max-width: 720px;
 }
 
 /* =====================================================
@@ -28,7 +46,7 @@ body {
 
 h1, h2, h3, h4 {
   font-weight: 600;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.4px;
 }
 
 h1 {
@@ -48,31 +66,6 @@ p {
 }
 
 /* =====================================================
-   LAYOUT
-===================================================== */
-
-.container {
-  width: 100%;
-  max-width: 1150px;
-  margin: 0 auto;
-  padding-left: 24px;
-  padding-right: 24px;
-}
-
-
-.narrow {
-  max-width: 720px;
-}
-
-.section {
-  padding: 120px 0;
-}
-
-.light {
-  background: #f6f8fb;
-}
-
-/* =====================================================
    HEADER
 ===================================================== */
 
@@ -80,52 +73,47 @@ p {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1000;
-  transition: all 0.35s ease;
-  background: transparent;
+  height: 90px;
+  z-index: 2000;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .site-header.scrolled {
   background: rgba(255,255,255,0.96);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(10px);
   box-shadow: 0 8px 30px rgba(0,0,0,0.06);
 }
 
 .header-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-
 
 /* Brand */
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
   text-decoration: none;
 }
 
 .logo {
   height: 52px;
-  display: block;
 }
 
 .brand-text {
   font-size: 1rem;
   font-weight: 600;
-  letter-spacing: 0.3px;
   color: white;
-  opacity: 0.95;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .site-header.scrolled .brand-text {
   opacity: 0;
-  transform: translateY(-6px);
-  pointer-events: none;
+  transform: translateY(-4px);
 }
 
 /* =====================================================
@@ -138,16 +126,15 @@ p {
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  z-index: 1100;
+  gap: 7px;
 }
 
 .hamburger-line {
   width: 30px;
   height: 3px;
-  background: white;
   border-radius: 3px;
-  transition: all 0.3s ease;
+  background: white;
+  transition: background 0.3s ease;
 }
 
 .site-header.scrolled .hamburger-line {
@@ -155,19 +142,19 @@ p {
 }
 
 /* =====================================================
-   FULLSCREEN NAVIGATION
+   FULLSCREEN OVERLAY MENU
 ===================================================== */
 
 .navigation {
   position: fixed;
   inset: 0;
   background: #0f1f2f;
+  z-index: 1500;
   display: flex;
   align-items: center;
   justify-content: center;
   transform: translateY(-100%);
   transition: transform 0.45s cubic-bezier(0.77, 0, 0.175, 1);
-  z-index: 1000;
 }
 
 .navigation.active {
@@ -180,12 +167,11 @@ p {
 }
 
 .nav-list li {
-  margin: 30px 0;
+  margin: 28px 0;
 }
 
 .nav-list a {
   font-size: 2rem;
-  font-weight: 500;
   text-decoration: none;
   color: rgba(255,255,255,0.85);
   transition: opacity 0.2s ease;
@@ -195,20 +181,8 @@ p {
   opacity: 0.6;
 }
 
-/* Active page */
-
 .nav-list a.active {
-  color: white;
-  position: relative;
-}
-
-.nav-list a.active::after {
-  content: "";
-  display: block;
-  width: 40px;
-  height: 2px;
-  background: white;
-  margin: 12px auto 0 auto;
+  color: #fff;
 }
 
 /* =====================================================
@@ -235,64 +209,10 @@ p {
 
 .hero-content {
   position: relative;
-  z-index: 2;
+  z-index: 10;
   color: white;
-  max-width: 650px;
   padding-top: 180px;
-}
-
-.hero-subtitle {
-  font-size: 1.3rem;
-  opacity: 0.9;
-  margin: 25px 0 40px 0;
-}
-
-/* =====================================================
-   BUTTONS
-===================================================== */
-
-.btn {
-  display: inline-block;
-  padding: 16px 36px;
-  border-radius: 7px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  text-decoration: none;
-  transition: all 0.25s ease;
-}
-
-.btn.primary {
-  background: white;
-  color: #111;
-}
-
-.btn.primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 14px 35px rgba(0,0,0,0.25);
-}
-
-.btn.secondary {
-  border: 1px solid rgba(255,255,255,0.7);
-  color: white;
-  background: transparent;
-}
-
-.btn.secondary:hover {
-  background: rgba(255,255,255,0.18);
-}
-
-/* =====================================================
-   PAGE HERO
-===================================================== */
-
-.page-hero {
-  padding-top: 200px;
-  padding-bottom: 80px;
-  background: #f6f8fb;
-}
-
-.page-hero h1 {
-  font-size: 2.8rem;
+  max-width: 650px;
 }
 
 /* =====================================================
@@ -317,8 +237,13 @@ p {
   margin-bottom: 18px;
 }
 
+.footer p,
+.footer li,
 .footer a {
-  color: rgba(255,255,255,0.8);
+  color: rgba(255,255,255,0.85);
+}
+
+.footer a {
   text-decoration: none;
 }
 
@@ -331,5 +256,5 @@ p {
   padding: 30px 0;
   background: #0a1622;
   font-size: 0.85rem;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.7);
 }
