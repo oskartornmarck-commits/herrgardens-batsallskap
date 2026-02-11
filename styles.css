@@ -1,0 +1,64 @@
+.site-header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.site-header.scrolled {
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+}
+
+.logo {
+  height: 50px;
+  display: block;
+}
+
+.hamburger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hamburger-line {
+  width: 24px;
+  height: 2px;
+  background: currentColor;
+}
+
+.navigation {
+  display: none;
+  background: white;
+  padding: 20px;
+}
+
+.navigation.active {
+  display: block;
+}
+
+.nav-list {
+  list-style: none;
+}
+
+.nav-list li {
+  margin-bottom: 12px;
+}
+
+.nav-list a {
+  text-decoration: none;
+  color: #222;
+  font-size: 1.1rem;
+}
