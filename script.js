@@ -17,31 +17,51 @@ function initHeader() {
   const hamburger = document.getElementById("hamburger");
   const nav = document.getElementById("primary-navigation");
   const header = document.querySelector(".site-header");
+  const links = document.querySelectorAll(".nav-list a");
 
-hamburger.addEventListener("click", () => {
-  nav.classList.toggle("active");
-  document.body.classList.toggle("menu-open");
-});
+  function updateHeaderOnScroll() {
+    if (document.body.classList.contains("menu-open")) return;
 
-
-  window.addEventListener("scroll", () => {
     if (window.scrollY > 40) {
       header.classList.add("scrolled");
     } else {
       header.classList.remove("scrolled");
     }
+  }
+
+  hamburger.addEventListener("click", () => {
+    nav.classList.toggle("active");
+    document.body.classList.toggle("menu-open");
+
+    // När meny öppnas → ta bort scrolled state
+    if (document.body.classList.contains("menu-open")) {
+      header.classList.remove("scrolled");
+    } else {
+      updateHeaderOnScroll();
+    }
   });
 
-  // Active link
-  const links = document.querySelectorAll(".nav-list a");
-  const current = window.location.pathname.split("/").pop();
+  links.forEach(link => {
+    link.addEventListener("click", () => {
+      nav.classList.remove("active");
+      document.body.classList.remove("menu-open");
+      updateHeaderOnScroll();
+    });
+  });
 
+  window.addEventListener("scroll", updateHeaderOnScroll);
+
+  updateHeaderOnScroll();
+
+  // Active link
+  const current = window.location.pathname.split("/").pop();
   links.forEach(link => {
     if (link.getAttribute("href") === current) {
       link.classList.add("active");
     }
   });
 }
+
 
 
 // Google Drive integration
