@@ -10,6 +10,8 @@
       class="hamburger" 
       id="hamburger"
       aria-label="Öppna meny"
+      aria-controls="primary-navigation"
+      aria-expanded="false"
     >
       <span></span>
       <span></span>
@@ -19,7 +21,12 @@
   </div>
 </header>
 
-<nav id="primary-navigation" class="navigation">
+<nav
+  id="primary-navigation"
+  class="navigation"
+  role="navigation"
+  aria-label="Huvudmeny"
+>
   <ul class="nav-list">
     <li><a href="index.html">Start</a></li>
     <li><a href="om.html">Om föreningen</a></li>

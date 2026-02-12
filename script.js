@@ -18,6 +18,18 @@ function initMenu() {
   const hamburger = document.getElementById("hamburger");
   const nav = document.getElementById("primary-navigation");
 
+  if (!header || !hamburger || !nav) {
+    return;
+  }
+
+  const updateMenuState = (isOpen) => {
+    nav.classList.toggle("active", isOpen);
+    document.body.classList.toggle("menu-open", isOpen);
+    hamburger.classList.toggle("is-active", isOpen);
+    hamburger.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    hamburger.setAttribute("aria-label", isOpen ? "Stäng meny" : "Öppna meny");
+  };
+
   // Scroll effect
   window.addEventListener("scroll", () => {
     if (window.scrollY > 50) {
@@ -29,15 +41,30 @@ function initMenu() {
 
   // Toggle menu
   hamburger.addEventListener("click", () => {
-    nav.classList.toggle("active");
-    document.body.classList.toggle("menu-open");
+    const isOpen = !nav.classList.contains("active");
+    updateMenuState(isOpen);
   });
 
   // Close menu on link click
   document.querySelectorAll(".nav-list a").forEach(link => {
     link.addEventListener("click", () => {
-      nav.classList.remove("active");
-      document.body.classList.remove("menu-open");
+      updateMenuState(false);
     });
+  });
+
+  // Close menu when clicking on overlay background (not on links)
+  nav.addEventListener("click", (event) => {
+    if (event.target === nav) {
+      updateMenuState(false);
+      hamburger.focus();
+    }
+  });
+
+  // Close menu with Escape key
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && nav.classList.contains("active")) {
+      updateMenuState(false);
+      hamburger.focus();
+    }
   });
 }
