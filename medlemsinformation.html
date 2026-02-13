@@ -24,7 +24,26 @@
 </head>
 <body>
 
-<div id="header-placeholder"></div>
+<div id="header-placeholder">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img src="assets/logo.png" class="logo" alt="Logotyp" width="120" height="50">
+        <span class="brand-text">Herrgårdsvikens Båtsällskap</span>
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Öppna meny" aria-controls="primary-navigation" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+  <nav id="primary-navigation" class="navigation" role="navigation" aria-label="Huvudmeny">
+    <ul class="nav-list">
+      <li><a href="index.html">Start</a></li>
+      <li><a href="om.html">Om föreningen</a></li>
+      <li><a href="medlemsinformation.html">Medlemsinformation</a></li>
+      <li><a href="dokument.html">Dokument</a></li>
+      <li><a href="kontakt.html">Kontakt</a></li>
+    </ul>
+  </nav>
+</div>
 
 <main>
   <section class="page-hero">
@@ -47,7 +66,16 @@
   </section>
 </main>
 
-<div id="footer-placeholder"></div>
+<div id="footer-placeholder">
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div><h3>Herrgårdsvikens Båtsällskap</h3><p>En trygg och naturnära hamn på Tjurkö.</p></div>
+      <div><h4>Snabblänkar</h4><ul><li><a href="om.html">Om föreningen</a></li><li><a href="medlemsinformation.html">Medlemsinformation</a></li><li><a href="dokument.html">Dokument</a></li></ul></div>
+      <div><h4>Kontakt</h4><p>info@herrgardensbatsallskap.se</p><p>Tjurkö, Karlskrona</p></div>
+    </div>
+    <div class="footer-bottom">© 2026 Herrgårdsvikens Båtsällskap</div>
+  </footer>
+</div>
 <script src="script.js"></script>
 
 </body>
