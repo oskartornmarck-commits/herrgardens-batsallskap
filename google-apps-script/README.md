@@ -25,3 +25,44 @@ Sidan **dokument.html** hämtar fillistan från en Google Apps Script-webbapp s�
 4. Spara filen.
 
 Därefter listas alla filer som läggs i Drive-mappen automatiskt på dokumentsidan. Mappens ägare behöver inte ändra något i koden när nya filer läggs till.
+
+---
+
+## Steg 2: Skapa webbapp för meny (Google Sheets som mini-CMS)
+
+1. Skapa ett Google Sheet, t.ex. "HBS Webb Config".
+2. Skapa en flik som heter **`Menu`**.
+3. Rad 1 (rubriker):
+
+   | label | href | order | visible |
+   |-------|------|-------|---------|
+
+4. Rader 2..n, t.ex.:
+
+   | label              | href                   | order | visible |
+   |--------------------|------------------------|-------|---------|
+   | Start              | index.html             | 1     | TRUE    |
+   | Om föreningen      | om.html                | 2     | TRUE    |
+   | Medlemsinformation | medlemsinformation.html| 3     | TRUE    |
+   | Dokument           | dokument.html          | 4     | TRUE    |
+   | Kontakt            | kontakt.html           | 5     | TRUE    |
+
+5. Hämta **kalkylarkets ID** från adressfältet i Google Sheets (mellan `/d/` och `/edit`).
+6. Öppna **MenuFromSheet.gs** i denna mapp och klistra in ID:t i `SHEET_ID`.
+7. Skapa ett nytt Apps Script-projekt via [script.google.com](https://script.google.com) och klistra in innehållet från **MenuFromSheet.gs**.
+8. Distribuera som **webbapp** på samma sätt som för dokument-listan:
+   - Kör som: **Jag**
+   - Åtkomst: **Alla**
+9. Kopiera webbapp-URL:en (ser ut som `https://script.google.com/macros/s/.../exec`).
+
+### Steg 3: Koppla meny-webbappen till webbplatsen
+
+1. Öppna **`script.js`**.
+2. Sök efter `MENU_SCRIPT_URL`.
+3. Klistra in webbapp-URL:en, t.ex.:
+
+   ```js
+   var MENU_SCRIPT_URL = "https://script.google.com/macros/s/XXXX/exec";
+   ```
+
+4. Spara – menyn i headern kommer nu att hämtas från Google Sheet-fliken `Menu`.
