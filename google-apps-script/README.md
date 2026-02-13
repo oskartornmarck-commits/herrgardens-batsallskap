@@ -66,3 +66,36 @@ Därefter listas alla filer som läggs i Drive-mappen automatiskt på dokumentsi
    ```
 
 4. Spara – menyn i headern kommer nu att hämtas från Google Sheet-fliken `Menu`.
+
+---
+
+## Steg 4: Sidinnehåll (flik "Content")
+
+Samma webbapp och URL hanterar även sidinnehåll. Skapa en flik **`Content`** i samma kalkylark:
+
+1. Rad 1 (rubriker):
+
+   | pageId | heroTitle | heroKicker | heroLead | bodyHtml |
+   |--------|-----------|------------|----------|----------|
+
+2. Rader 2..n – en rad per sida. `pageId` måste matcha filnamnet (utan .html):
+   - `index` = index.html
+   - `om` = om.html
+   - `medlemsinformation` = medlemsinformation.html
+   - `kontakt` = kontakt.html
+   - `dokument` = dokument.html
+
+3. **bodyHtml** kan innehålla enkel HTML: `<p>...</p>`, `<h2>...</h2>`, `<ul><li>...</li></ul>`, `<a href="...">...</a>`
+
+Exempel på en rad för Om-sidan:
+
+| pageId | heroTitle       | heroKicker | heroLead                         | bodyHtml |
+|--------|-----------------|------------|----------------------------------|----------|
+| om     | Om föreningen   | (tom)      | En ideell förening som verkar... | `<p>Herrgårdens Båtsällskap är...</p><h2>Styrelse</h2><ul><li>Ordförande – Erik</li>...</ul>` |
+
+- **heroTitle**: rubrik i sidhuvudet
+- **heroKicker**: liten text ovanför rubriken (valfritt, tom om inte används)
+- **heroLead**: ingress under rubriken (valfritt)
+- **bodyHtml**: huvudinnehållet (HTML)
+
+Om en rad saknas för en sida används det statiska innehållet från HTML-filen.

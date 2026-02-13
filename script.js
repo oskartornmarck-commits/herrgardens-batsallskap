@@ -1,6 +1,4 @@
-// Konfig: URL till meny-webbapp (Google Apps Script som läser från Google Sheets)
-// Fylls i enligt google-apps-script/README.md, t.ex.:
-// var MENU_SCRIPT_URL = "https://script.google.com/macros/s/XXXX/exec";
+// Konfig: URL till webbapp som läser meny OCH sidinnehåll från Google Sheets
 var MENU_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwecYMMVgnhmI9R0LD1acUTHhTeCM7mAGqcSLTr4ceLaP5JmqtzJNIFBDLQkNI_IQul/exec";
 
 // Load header
@@ -9,7 +7,7 @@ fetch("header.html")
   .then(data => {
     document.getElementById("header-placeholder").innerHTML = data;
     initMenu();
-    loadMenuFromSheet();
+    loadConfig();
   });
 
 // Load footer
@@ -75,63 +73,66 @@ function initMenu() {
   });
 }
 
-function loadMenuFromSheet() {
-  // Om ingen URL är angiven eller om den inte ser ut som en Apps Script-URL – lämna ev. statisk meny orörd.
+function loadConfig() {
   if (!MENU_SCRIPT_URL || MENU_SCRIPT_URL.indexOf("script.google.com") === -1) {
-    // Fallback: om header.html saknar länkar helt, lägg in en enkel statisk meny.
     const navList = document.querySelector(".nav-list");
     if (navList && navList.children.length === 0) {
-      navList.innerHTML = `
-        <li><a href="index.html">Start</a></li>
-        <li><a href="om.html">Om föreningen</a></li>
-        <li><a href="medlemsinformation.html">Medlemsinformation</a></li>
-        <li><a href="dokument.html">Dokument</a></li>
-        <li><a href="kontakt.html">Kontakt</a></li>
-      `;
+      navList.innerHTML = "<li><a href=\"index.html\">Start</a></li><li><a href=\"om.html\">Om föreningen</a></li><li><a href=\"medlemsinformation.html\">Medlemsinformation</a></li><li><a href=\"dokument.html\">Dokument</a></li><li><a href=\"kontakt.html\">Kontakt</a></li>";
     }
     return;
   }
 
-  const navList = document.querySelector(".nav-list");
-  if (!navList) return;
+  var path = window.location.pathname || "";
+  var pageId = (path.split("/").pop() || "").replace(/\.html$/i, "") || "index";
+  var navList = document.querySelector(".nav-list");
 
-  // JSONP-callback
-  window.__hbsMenuCallback = function(items) {
-    window.__hbsMenuCallback = null;
-    if (!Array.isArray(items) || !items.length) {
-      return;
-    }
-    navList.innerHTML = "";
-    items.forEach(function(item) {
-      if (!item || !item.label || !item.href) return;
-      const li = document.createElement("li");
-      const a = document.createElement("a");
-      a.textContent = item.label;
-      a.href = item.href;
-      li.appendChild(a);
-      navList.appendChild(li);
-    });
+  window.__hbsConfigCallback = function(data) {
+    window.__hbsConfigCallback = null;
+    if (!data) return;
 
-    // Koppla om klick-hanterare efter att menyn bytts ut
-    document.querySelectorAll(".nav-list a").forEach(link => {
-      link.addEventListener("click", () => {
-        const nav = document.getElementById("primary-navigation");
-        const hamburger = document.getElementById("hamburger");
-        if (!nav || !hamburger) return;
-        nav.classList.remove("active");
-        document.body.classList.remove("menu-open");
-        hamburger.classList.remove("is-active");
-        hamburger.setAttribute("aria-expanded", "false");
-        hamburger.setAttribute("aria-label", "Öppna meny");
+    if (Array.isArray(data.menu) && data.menu.length && navList) {
+      navList.innerHTML = "";
+      data.menu.forEach(function(item) {
+        if (!item || !item.label || !item.href) return;
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.textContent = item.label;
+        a.href = item.href;
+        li.appendChild(a);
+        navList.appendChild(li);
       });
-    });
+      document.querySelectorAll(".nav-list a").forEach(function(link) {
+        link.addEventListener("click", function() {
+          var nav = document.getElementById("primary-navigation");
+          var hamburger = document.getElementById("hamburger");
+          if (nav && hamburger) {
+            nav.classList.remove("active");
+            document.body.classList.remove("menu-open");
+            hamburger.classList.remove("is-active");
+            hamburger.setAttribute("aria-expanded", "false");
+            hamburger.setAttribute("aria-label", "Öppna meny");
+          }
+        });
+      });
+    }
+
+    var content = data.content;
+    if (content && typeof content === "object") {
+      var set = function(attr, value, useHtml) {
+        if (!value) return;
+        var el = document.querySelector("[data-content=\"" + attr + "\"]");
+        if (el) (useHtml ? (el.innerHTML = value) : (el.textContent = value));
+      };
+      set("heroTitle", content.herotitle);
+      set("heroKicker", content.herokicker);
+      set("heroLead", content.herolead);
+      set("body", content.bodyhtml, true);
+    }
   };
 
-  const script = document.createElement("script");
-  script.src = MENU_SCRIPT_URL + (MENU_SCRIPT_URL.indexOf("?") >= 0 ? "&" : "?") + "callback=__hbsMenuCallback";
+  var sep = MENU_SCRIPT_URL.indexOf("?") >= 0 ? "&" : "?";
+  var script = document.createElement("script");
+  script.src = MENU_SCRIPT_URL + sep + "page=" + encodeURIComponent(pageId) + "&callback=__hbsConfigCallback";
   script.async = true;
-  script.onerror = function() {
-    // Vid fel lämnar vi ev. befintlig meny orörd.
-  };
   document.head.appendChild(script);
 }
