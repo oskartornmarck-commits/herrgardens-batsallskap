@@ -2,21 +2,26 @@
 var MENU_SCRIPT_URL = (typeof HBS_CONFIG !== "undefined" && HBS_CONFIG.menuScriptUrl) ? HBS_CONFIG.menuScriptUrl : "";
 var CONFIG_CACHE_KEY = "hbs_config";
 
-// Load header – config-anropet startas redan i <head> (preload) för snabbare första laddning
-fetch("header.html")
-  .then(res => res.text())
-  .then(data => {
-    document.getElementById("header-placeholder").innerHTML = data;
-    initMenu();
-    loadConfig();
-  });
+// Load header – hoppa över fetch om innehållet redan finns inline (index.html)
+var headerEl = document.getElementById("header-placeholder");
+if (headerEl && !headerEl.hasChildNodes()) {
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => {
+      headerEl.innerHTML = data;
+      initMenu();
+      loadConfig();
+    });
+} else {
+  initMenu();
+  loadConfig();
+}
 
-// Load footer
-fetch("footer.html")
-  .then(res => res.text())
-  .then(data => {
-    document.getElementById("footer-placeholder").innerHTML = data;
-  });
+// Load footer – hoppa över om redan inline
+var footerEl = document.getElementById("footer-placeholder");
+if (footerEl && !footerEl.hasChildNodes()) {
+  fetch("footer.html").then(res => res.text()).then(data => { footerEl.innerHTML = data; });
+}
 
 function initMenu() {
   const header = document.querySelector(".site-header");
@@ -183,6 +188,7 @@ function loadConfig() {
       prefetchOtherPages(pageId);
     }
   } else {
+    // Menyn finns redan i header.html – ersätts av API när det kommer
     setTimeout(function() {
       if (navList && navList.children.length === 0) fallbackMenu();
     }, 5000);
