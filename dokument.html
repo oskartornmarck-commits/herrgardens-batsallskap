@@ -30,8 +30,9 @@
   <section class="section">
     <div class="container narrow">
       <h2>Dokument</h2>
+      <p class="section-intro">Här nedan listas dokument från föreningens Drive-mapp. Klicka för att öppna eller ladda ner.</p>
       <div id="document-list" class="document-list">
-        Laddar dokument...
+        <p class="document-list-loading">Laddar dokument...</p>
       </div>
     </div>
   </section>
@@ -39,6 +40,57 @@
 
 <div id="footer-placeholder"></div>
 <script src="script.js"></script>
+<script>
+(function() {
+  // Klistra in din Webbapp-URL här efter att du distribuerat Google Apps Script (se google-apps-script/README.md).
+  var DRIVE_LIST_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby_Anni2-0X2WJJzH52-SAbEIgn5pj5BWm6LBHLPA_4xho25wgJISGnHYs5cu5qQYIY/exec";
+
+  var listEl = document.getElementById("document-list");
+  if (!listEl) return;
+
+  function renderList(files) {
+    if (!files || files.length === 0) {
+      listEl.innerHTML = "<p class=\"document-list-empty\">Inga dokument i mappen just nu.</p>";
+      return;
+    }
+    var html = "<ul class=\"document-list-files\">";
+    for (var i = 0; i < files.length; i++) {
+      var f = files[i];
+      var name = (f.name || "Dokument").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      var url = (f.url || "#").replace(/"/g, "&quot;");
+      html += "<li><a href=\"" + url + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + name + "</a></li>";
+    }
+    html += "</ul>";
+    listEl.innerHTML = html;
+  }
+
+  function showError() {
+    listEl.innerHTML = "<p class=\"document-list-error\">Kunde inte ladda dokument. Kontrollera att Webbapp-URL är ifylld i dokument.html (se google-apps-script/README.md).</p>";
+  }
+
+  if (!DRIVE_LIST_SCRIPT_URL || DRIVE_LIST_SCRIPT_URL.indexOf("script.google.com") === -1) {
+    showError();
+    return;
+  }
+
+  window.__driveListCallback = function(data) {
+    window.__driveListCallback = null;
+    if (Array.isArray(data)) {
+      renderList(data);
+    } else {
+      showError();
+    }
+  };
+
+  var script = document.createElement("script");
+  script.src = DRIVE_LIST_SCRIPT_URL + (DRIVE_LIST_SCRIPT_URL.indexOf("?") >= 0 ? "&" : "?") + "callback=__driveListCallback";
+  script.async = true;
+  script.onerror = function() {
+    showError();
+  };
+  document.head.appendChild(script);
+})();
+</script>
 
 </body>
 </html>

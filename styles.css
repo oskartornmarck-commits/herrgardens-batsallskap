@@ -68,6 +68,65 @@ body {
   color: #374151;
 }
 
+/* DOCUMENT LIST (dokument.html) */
+.document-list-files {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+.document-list-files li {
+  margin-bottom: 12px;
+}
+.document-list-files a {
+  color: #0f1f2f;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 10px 14px;
+  display: inline-block;
+  border-radius: 6px;
+  background: #f3f6fb;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.document-list-files a:hover {
+  background: #e5eaf2;
+  color: #020617;
+}
+.document-list-loading,
+.document-list-empty {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.document-list-error {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.section-intro {
+  margin-bottom: 20px;
+  color: #374151;
+}
+
+.document-list-note {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(15,31,47,0.08);
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.document-list-note a {
+  color: #0f1f2f;
+  text-decoration: underline;
+}
+
+.document-list-note code {
+  font-size: 0.85em;
+  background: #f3f6fb;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
 /* HEADER */
 .site-header {
   position: fixed;
