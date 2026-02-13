@@ -6,7 +6,19 @@
   <title>Kontakt – Herrgårdens Båtsällskap</title>
   <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+  <script src="config.js"></script>
+  <script>
+  (function(){
+    var u = (typeof HBS_CONFIG !== "undefined" && HBS_CONFIG.menuScriptUrl) ? HBS_CONFIG.menuScriptUrl : "";
+    if (!u) return;
+    var p = (location.pathname.split("/").pop() || "index").replace(/\.html$/i, "") || "index";
+    window.__hbsConfigQueue = window.__hbsConfigQueue || [];
+    window.__hbsConfigCallback = function(d){ if(d) window.__hbsConfigQueue.push(d); };
+    var s = document.createElement("script");
+    s.src = u + "?page=" + encodeURIComponent(p) + "&callback=__hbsConfigCallback&_=" + Date.now();
+    document.head.appendChild(s);
+  })();
+  </script>
 </head>
 <body>
 

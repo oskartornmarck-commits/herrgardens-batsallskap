@@ -50,22 +50,18 @@ Därefter listas alla filer som läggs i Drive-mappen automatiskt på dokumentsi
 5. Hämta **kalkylarkets ID** från adressfältet i Google Sheets (mellan `/d/` och `/edit`).
 6. Öppna **MenuFromSheet.gs** i denna mapp och klistra in ID:t i `SHEET_ID`.
 7. Skapa ett nytt Apps Script-projekt via [script.google.com](https://script.google.com) och klistra in innehållet från **MenuFromSheet.gs**.
-8. Distribuera som **webbapp** på samma sätt som för dokument-listan:
+8. Kör funktionen `auktoriseraEnGang()` en gång (Välj funktion i menyn → Kör) för att ge scriptet läsbehörighet till arket.
+9. Distribuera som **webbapp** på samma sätt som för dokument-listan:
    - Kör som: **Jag**
    - Åtkomst: **Alla**
-9. Kopiera webbapp-URL:en (ser ut som `https://script.google.com/macros/s/.../exec`).
+10. Kopiera webbapp-URL:en (ser ut som `https://script.google.com/macros/s/.../exec`).
 
 ### Steg 3: Koppla meny-webbappen till webbplatsen
 
-1. Öppna **`script.js`**.
-2. Sök efter `MENU_SCRIPT_URL`.
-3. Klistra in webbapp-URL:en, t.ex.:
+1. Öppna **`config.js`** och uppdatera `menuScriptUrl` med din webbapp-URL.
+2. Detta används av både preload (snabb första laddning) och huvudlogiken i `script.js`.
 
-   ```js
-   var MENU_SCRIPT_URL = "https://script.google.com/macros/s/XXXX/exec";
-   ```
-
-4. Spara – menyn i headern kommer nu att hämtas från Google Sheet-fliken `Menu`.
+Menyn och sidinnehållet hämtas nu från Google Sheets.
 
 ---
 
@@ -99,3 +95,17 @@ Exempel på en rad för Om-sidan:
 - **bodyHtml**: huvudinnehållet (HTML)
 
 Om en rad saknas för en sida används det statiska innehållet från HTML-filen.
+
+---
+
+## Viktigt: Uppdatera distributionen när du ändrat scriptet
+
+**Ändringar i Sheets syns direkt**, men **ändringar i Apps Script-koden** kräver en ny distribution:
+
+1. Öppna ditt Apps Script-projekt på [script.google.com](https://script.google.com).
+2. Gå till **Distribuera** → **Hantera distributioner**.
+3. Klicka på pennikonen (Redigera) vid din webbapp.
+4. Under **Version** väljer du **Ny version** (inte "Head").
+5. Klicka **Distribuera**.
+
+Webbappen kommer nu att köra den senaste koden. URL:en ändras inte.
