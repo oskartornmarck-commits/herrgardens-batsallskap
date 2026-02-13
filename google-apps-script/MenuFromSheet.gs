@@ -15,6 +15,10 @@ var MENU_SHEET_NAME = 'Menu';
 var CONTENT_SHEET_NAME = 'Content';
 var DEBUG = false; // Sätt till true vid felsökning
 
+// Netlify Build Hook – anropas vid redigering så att innehåll publiceras automatiskt.
+// Hämta URL från Netlify: Site settings → Build & deploy → Build hooks → Add build hook
+var NETLIFY_BUILD_HOOK_URL = '';
+
 function auktoriseraEnGang() {
   var ss = SpreadsheetApp.openById(SHEET_ID);
   var sheet = ss.getSheetByName(MENU_SHEET_NAME);
@@ -126,4 +130,26 @@ function serveMenu(callback) {
     items.push({ label: 'DEBUG: Endast rubrikrad eller fel', href: '#' });
   }
   return output(items, callback);
+}
+
+/**
+ * Anropas när arket redigeras (installerbar trigger). Startar Netlify-deploy så att
+ * innehållsredaktören får ändringarna ut utan att behöva deploya manuellt.
+ *
+ * Inställning: Triggers (klockikonen) → + Lägg till trigger →
+ *   Händelse: Vid redigering i kalkylark
+ *   Funktionsväljare: whenSheetEdited
+ */
+function whenSheetEdited(e) {
+  if (!NETLIFY_BUILD_HOOK_URL) return;
+  try {
+    var sheet = e.range.getSheet();
+    var name = sheet.getName();
+    if (name !== MENU_SHEET_NAME && name !== CONTENT_SHEET_NAME) return;
+    var props = PropertiesService.getScriptProperties();
+    var last = Number(props.getProperty('lastDeployTrigger') || 0);
+    if (Date.now() - last < 120000) return;
+    props.setProperty('lastDeployTrigger', String(Date.now()));
+    UrlFetchApp.fetch(NETLIFY_BUILD_HOOK_URL, { method: 'post' });
+  } catch (err) {}
 }

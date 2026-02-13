@@ -98,6 +98,37 @@ Om en rad saknas för en sida används det statiska innehållet från HTML-filen
 
 ---
 
+## Content-cache (snabb laddning utan väntan på Google)
+
+Sidan laddar först innehåll från **`content-cache.json`** (genereras vid deploy). Detta gör att besökare inte behöver vänta på Google API:t.
+
+**För Netlify:** Byggkommandot `npm run build` körs automatiskt vid deploy och hämtar innehåll från Sheets till `content-cache.json`.
+
+**Uppdatera efter ändringar i Sheets:** Gör en ny deploy (push till Git eller "Trigger deploy" i Netlify). Detta kör build-scriptet och hämtar nytt innehåll.
+
+**Lokalt:** Kör `npm run fetch-content` när du vill uppdatera cachen innan du testar.
+
+---
+
+## Automatisk deploy vid redigering (för innehållsredaktörer)
+
+Om den som uppdaterar Sheets inte kan deploya själv kan du aktivera automatisk deploy vid redigering:
+
+1. **Skapa Build Hook i Netlify:** Site settings → Build & deploy → Build hooks → Add build hook. Namnge den (t.ex. "Sheet-ändring") och kopiera URL:en.
+
+2. **Uppdatera MenuFromSheet.gs:** Sätt `NETLIFY_BUILD_HOOK_URL` till Build Hook-URL:en (inom citattecken).
+
+3. **Lägg till trigger i Apps Script:** Klicka på klockikonen (Utlösare) → + Lägg till utlösare →
+   - Välj händelse: **Vid redigering i kalkylark**
+   - Välj funktion: **whenSheetEdited**
+   - Spara
+
+4. **Välj rätt kalkylark** när du lägger till trigger – det ska vara samma ark som har flikarna Menu och Content.
+
+När någon redigerar Menu- eller Content-fliken startar en Netlify-deploy automatiskt. Ytterligare ändringar inom 2 minuter hoppas över (för att undvika många deploys).
+
+---
+
 ## Viktigt: Uppdatera distributionen när du ändrat scriptet
 
 **Ändringar i Sheets syns direkt**, men **ändringar i Apps Script-koden** kräver en ny distribution:

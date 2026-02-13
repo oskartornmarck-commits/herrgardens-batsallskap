@@ -1,0 +1,56 @@
+{
+  "menu": [
+    {
+      "label": "Om föreningen",
+      "href": "om.html",
+      "order": 2
+    },
+    {
+      "label": "Medlemsinformation",
+      "href": "medlemsinformation.html",
+      "order": 3
+    },
+    {
+      "label": "Dokument",
+      "href": "dokument.html",
+      "order": 4
+    },
+    {
+      "label": "Kontakt",
+      "href": "kontakt.html",
+      "order": 5
+    }
+  ],
+  "pages": {
+    "index": {
+      "herotitle": "Välkommen till Herrgårdens Båtsällskap",
+      "herokicker": "",
+      "herolead": "En trygg och naturnära hamn på Tjurkö.",
+      "bodyhtml": "<h2>Välkommen</h2><p>Herrgårdens Båtsällskap är en ideell förening som verkar för en trygg, välskött och trivsam båthamn.</p><p>Här hittar du information om medlemskap, regler, dokument och kontaktuppgifter.</p>"
+    },
+    "om": {
+      "herotitle": "Om denna förening",
+      "herokicker": "",
+      "herolead": "",
+      "bodyhtml": "<p>Herrgårdens Båtsällskap är en ideell förening som verkar för en trygg, välskött och trivsam båthamn på Tjurkö.</p><p>Föreningen drivs av medlemmarna och har som mål att främja gemenskap, säkerhet och respekt för vår kustmiljö.</p><h2>Styrelse</h2><ul><li>Ordförande – Namn</li><li>Kassör – Namn</li><li>Sekreterare – Namn</li><li>Ledamot – Namn</li></ul>"
+    },
+    "medlemsinformation": {
+      "herotitle": "Medlemsinformation",
+      "herokicker": "",
+      "herolead": "",
+      "bodyhtml": "<h2>Test Medlemskap</h2><p>För att bli medlem kontaktar du styrelsen. Medlemskapet gäller per kalenderår.</p><h2>Avgifter</h2><p>Årsavgift och eventuella hamnavgifter beslutas av årsmötet.</p><h2>Regler</h2><p>Samtliga medlemmar ansvarar för att följa föreningens stadgar och ordningsregler.</p>"
+    },
+    "kontakt": {
+      "herotitle": "Kontakt",
+      "herokicker": "",
+      "herolead": "",
+      "bodyhtml": "<h2>Kontaktuppgifter</h2><p>E-post: <a href=\"mailto:info@herrgardensbatsallskap.se\">info@herrgardensbatsallskap.se</a></p><p>Hamn: Tjurkö, Karlskrona</p>"
+    },
+    "dokument": {
+      "herotitle": "Dokument",
+      "herokicker": "",
+      "herolead": "",
+      "bodyhtml": "<h2>Dokument</h2><p class=\"section-intro\">Här nedan listas dokument från föreningens Drive-mapp. Klicka för att öppna eller ladda ner.</p>"
+    }
+  }
+}

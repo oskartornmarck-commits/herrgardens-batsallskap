@@ -1,0 +1,6 @@
+# Netlify-konfiguration – byggkommandot hämtar innehåll från Google Sheets
+# och genererar content-cache.json innan deploy
+
+[build]
+  command = "npm run build"
+  publish = "."

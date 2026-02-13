@@ -139,58 +139,59 @@ function prefetchOtherPages(currentPageId) {
 }
 
 function loadConfig() {
-  if (!MENU_SCRIPT_URL || MENU_SCRIPT_URL.indexOf("script.google.com") === -1) {
-    var navList = document.querySelector(".nav-list");
-    if (navList && navList.children.length === 0) {
-      navList.innerHTML = "<li><a href=\"index.html\">Start</a></li><li><a href=\"om.html\">Om föreningen</a></li><li><a href=\"medlemsinformation.html\">Medlemsinformation</a></li><li><a href=\"dokument.html\">Dokument</a></li><li><a href=\"kontakt.html\">Kontakt</a></li>";
-    }
-    return;
-  }
-
   var path = window.location.pathname || "";
   var pageId = (path.split("/").pop() || "").replace(/\.html$/i, "") || "index";
   var navList = document.querySelector(".nav-list");
-
-  // Visa cached innehåll direkt – ingen väntan
-  try {
-    var cached = localStorage.getItem(CONFIG_CACHE_KEY + "_" + pageId);
-    if (cached) {
-      var data = JSON.parse(cached);
-      applyConfig(data, navList);
-    }
-  } catch (e) {}
-
-  // Preload i <head> har redan startat anropet – vi tar över callback
-  window.__hbsConfigCallback = function(data) {
-    window.__hbsConfigCallback = null;
-    if (!data) return;
-    applyConfig(data, navList);
-    try {
-      localStorage.setItem(CONFIG_CACHE_KEY + "_" + pageId, JSON.stringify(data));
-    } catch (e) {}
-    prefetchOtherPages(pageId);
-  };
-
   var fallbackMenu = function() {
     if (navList && navList.children.length === 0) {
       navList.innerHTML = "<li><a href=\"index.html\">Start</a></li><li><a href=\"om.html\">Om föreningen</a></li><li><a href=\"medlemsinformation.html\">Medlemsinformation</a></li><li><a href=\"dokument.html\">Dokument</a></li><li><a href=\"kontakt.html\">Kontakt</a></li>";
     }
   };
 
-  // Om preload redan returnerat finns data i kön – använd direkt
-  if (window.__hbsConfigQueue && window.__hbsConfigQueue.length) {
-    var data = window.__hbsConfigQueue.shift();
-    if (data) {
-      applyConfig(data, navList);
-      try {
-        localStorage.setItem(CONFIG_CACHE_KEY + "_" + pageId, JSON.stringify(data));
-      } catch (e) {}
-      prefetchOtherPages(pageId);
-    }
-  } else {
-    // Menyn finns redan i header.html – ersätts av API när det kommer
-    setTimeout(function() {
-      if (navList && navList.children.length === 0) fallbackMenu();
-    }, 5000);
+  function useData(data) {
+    if (!data) return;
+    applyConfig(data, navList);
+    try {
+      localStorage.setItem(CONFIG_CACHE_KEY + "_" + pageId, JSON.stringify(data));
+    } catch (e) {}
   }
+
+  // 1. Försök content-cache.json (genereras vid build – snabbast)
+  fetch("content-cache.json")
+    .then(function(r) { return r.ok ? r.json() : Promise.reject(); })
+    .then(function(cache) {
+      var data = { menu: cache.menu || [], content: (cache.pages && cache.pages[pageId]) || {} };
+      useData(data);
+    })
+    .catch(function() {
+      // 2. content-cache saknas – använd localStorage
+      try {
+        var cached = localStorage.getItem(CONFIG_CACHE_KEY + "_" + pageId);
+        if (cached) {
+          useData(JSON.parse(cached));
+          return;
+        }
+      } catch (e) {}
+
+      // 3. Fallback till Google API (preload i head + callback)
+      if (!MENU_SCRIPT_URL || MENU_SCRIPT_URL.indexOf("script.google.com") === -1) {
+        fallbackMenu();
+        return;
+      }
+
+      window.__hbsConfigCallback = function(data) {
+        window.__hbsConfigCallback = null;
+        if (data) {
+          useData(data);
+          prefetchOtherPages(pageId);
+        }
+      };
+
+      if (window.__hbsConfigQueue && window.__hbsConfigQueue.length) {
+        useData(window.__hbsConfigQueue.shift());
+        prefetchOtherPages(pageId);
+      } else {
+        setTimeout(function() { fallbackMenu(); }, 5000);
+      }
+    });
 }

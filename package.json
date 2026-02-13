@@ -1,0 +1,8 @@
+{
+  "name": "herrgardens-batsallskap",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/fetch-content.js",
+    "fetch-content": "node scripts/fetch-content.js"
+  }
+}
